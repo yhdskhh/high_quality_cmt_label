@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--    <link rel="icon" href="data:,">  &lt;!&ndash; 完全禁用 &ndash;&gt;-->
+    <title>评论标注系统 - 登录</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #3a7bc8;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>评论标注系统</h1>
+            <p>请登录以继续</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" placeholder="请输入用户名" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="请输入密码" required>
+                <div id="errorMessage" class="error-message">用户名或密码错误</div>
+            </div>
+
+            <button type="submit" class="login-button">登录</button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+    <script>
+        // 预定义的用户名和密码
+        const CREDENTIAL_HASHES = {
+        "test":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+        "reviewer1":"4f395917080026d70807ed3758036a2fc3d428f32833e70ae3df37a26d703f3f",
+        "reviewer2":"ba889c64124fef6744f58d39637adf4e6faf6814fd91e054e1d22a8c613304a8",
+        "reviewer3":"ba683ae1c197e6cfb5461eafaf93bf2348d0f59d742415b728c2cf19c8eb3508",
+        "reviewer4":"50433a1bab4aa1ef31655ec119a551c60f7a7342e93c099ed2c7f96ca3302746",
+        "reviewer5":"1e525a364790cde49386e1f4e73d0b662025d2d64546c3aa2e9cfc6c7d252773"
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('errorMessage');
+
+            // 计算输入密码的哈希
+            const inputHash = sha256(password);
+
+            // 验证用户名和密码
+            if (CREDENTIAL_HASHES[username] === inputHash) {
+                sessionStorage.setItem('currentUser', username);
+
+                window.location.href = 'comments.html';
+              } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+
+        // 输入时隐藏错误信息
+        document.getElementById('username').addEventListener('input', function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
