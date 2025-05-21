@@ -8,7 +8,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const ITEMS_PER_PAGE = 10;
 // 初始化 Supabase 客户端
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
+console.info('初始化:', supabase);
 const currentUser = document.getElementById("currentUser").textContent || 'anonymous'; // 如果没有用户名则使用 'anonymous'
 const total_num = 10000;
 // 全局变量
